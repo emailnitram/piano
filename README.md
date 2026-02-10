@@ -13,12 +13,12 @@ A simple web application to help beginners learn the fundamentals of playing pia
 - [x] Add audio playback using Web Audio API
 - [x] Ensure responsive design for desktop/tablet
 
-### Phase 2: Note Recognition
-- [ ] Display note names on piano keys (C, D, E, F, G, A, B)
-- [ ] Create "Note Quiz" mode - app shows a note, user plays it
-- [ ] Add visual feedback (correct/incorrect indicators)
-- [ ] Track score/streak counter
-- [ ] Implement basic audio visualization (waveform or simple animation)
+### Phase 2: Note Recognition ✅
+- [x] Display note names on piano keys (C, D, E, F, G, A, B)
+- [x] Create "Note Quiz" mode - app shows a note, user plays it
+- [x] Add visual feedback (correct/incorrect indicators)
+- [x] Track score/streak counter
+- [x] Implement basic audio visualization (waveform or simple animation)
 
 ### Phase 3: Scales & Patterns
 - [ ] Add C Major scale lesson module
