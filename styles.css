@@ -1,0 +1,276 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #a0a0a0;
+    font-size: 1.1rem;
+}
+
+.instructions {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.instructions p {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.key-mapping {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.key-mapping span {
+    color: #ccc;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+kbd {
+    background: #333;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    border: 1px solid #555;
+}
+
+.piano-container {
+    background: #333;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.piano {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 200px;
+}
+
+.key {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    user-select: none;
+}
+
+.key.white {
+    width: 12.5%;
+    height: 100%;
+    background: linear-gradient(180deg, #fff 0%, #f0f0f0 100%);
+    border: 1px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    z-index: 1;
+}
+
+.key.white:hover {
+    background: linear-gradient(180deg, #f8f8f8 0%, #e8e8e8 100%);
+}
+
+.key.white.active {
+    background: linear-gradient(180deg, #ddd 0%, #ccc 100%);
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.key.black {
+    position: absolute;
+    width: 8%;
+    height: 60%;
+    background: linear-gradient(180deg, #333 0%, #111 100%);
+    border-radius: 0 0 6px 6px;
+    z-index: 2;
+    transform: translateX(-50%);
+}
+
+.key.black:hover {
+    background: linear-gradient(180deg, #444 0%, #222 100%);
+}
+
+.key.black.active {
+    background: linear-gradient(180deg, #555 0%, #333 100%);
+    height: 58%;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.note-label {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.key.white .note-label {
+    color: #666;
+}
+
+.key.black .note-label {
+    color: #999;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+}
+
+.key-label {
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+    font-family: monospace;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.key.white .key-label {
+    color: #999;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.key.black .key-label {
+    color: #666;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.status {
+    margin-top: 30px;
+}
+
+#status-text {
+    color: #fff;
+    font-size: 1.2rem;
+    min-height: 30px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    header p {
+        font-size: 1rem;
+    }
+    
+    .piano {
+        height: 150px;
+    }
+    
+    .key.white {
+        border-radius: 0 0 6px 6px;
+    }
+    
+    .key.black {
+        border-radius: 0 0 4px 4px;
+    }
+    
+    .note-label {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+    
+    .key.black .note-label {
+        font-size: 0.7rem;
+        margin-bottom: 6px;
+    }
+    
+    .key-label {
+        font-size: 0.65rem;
+        margin-bottom: 5px;
+        padding: 1px 4px;
+    }
+    
+    .instructions {
+        padding: 15px;
+    }
+    
+    .key-mapping {
+        gap: 5px;
+    }
+    
+    .key-mapping span {
+        font-size: 0.75rem;
+    }
+    
+    kbd {
+        padding: 2px 5px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .piano-container {
+        padding: 10px;
+    }
+    
+    .piano {
+        height: 120px;
+    }
+    
+    .note-label {
+        margin-bottom: 8px;
+        font-size: 0.7rem;
+    }
+    
+    .key-label {
+        font-size: 0.55rem;
+        margin-bottom: 4px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .key:hover {
+        transform: none;
+    }
+    
+    .key.white:active {
+        background: linear-gradient(180deg, #ddd 0%, #ccc 100%);
+        transform: translateY(2px);
+    }
+    
+    .key.black:active {
+        background: linear-gradient(180deg, #555 0%, #333 100%);
+        height: 58%;
+    }
+}
