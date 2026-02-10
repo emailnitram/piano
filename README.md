@@ -1,1 +1,64 @@
-# piano
+# Piano Learning Web App
+
+A simple web application to help beginners learn the fundamentals of playing piano.
+
+---
+
+## Development Checklist
+
+### Phase 1: Foundation & Setup
+- [ ] Set up project structure (HTML, CSS, JS)
+- [ ] Create virtual piano keyboard UI (single octave to start)
+- [ ] Implement keyboard mapping (computer keys → piano notes)
+- [ ] Add audio playback using Web Audio API
+- [ ] Ensure responsive design for desktop/tablet
+
+### Phase 2: Note Recognition
+- [ ] Display note names on piano keys (C, D, E, F, G, A, B)
+- [ ] Create "Note Quiz" mode - app shows a note, user plays it
+- [ ] Add visual feedback (correct/incorrect indicators)
+- [ ] Track score/streak counter
+- [ ] Implement basic audio visualization (waveform or simple animation)
+
+### Phase 3: Scales & Patterns
+- [ ] Add C Major scale lesson module
+- [ ] Highlight keys as user plays through scale
+- [ ] Show finger numbers on keys (1-5 for right hand)
+- [ ] Create scale practice mode with metronome (visual beat indicator)
+- [ ] Add ascending and descending scale practice
+
+### Phase 4: Simple Songs
+- [ ] Create library of 3 beginner songs (e.g., Twinkle Twinkle, Mary Had a Little Lamb, Ode to Joy)
+- [ ] Implement "falling notes" or "sheet music" display
+- [ ] Add "wait mode" - song pauses until user hits correct note
+- [ ] Adjustable playback speed for practice
+- [ ] Loop sections for focused practice
+
+### Phase 5: Basics & Technique
+- [ ] Add hand position guide (where to place hands on keyboard)
+- [ ] Create posture reminder overlay
+- [ ] Add "lessons" section with written tips
+- [ ] Include basic music theory (whole steps, half steps, octave concept)
+- [ ] Add progress tracking (lessons completed, songs mastered)
+
+### Phase 6: Polish & Ship
+- [ ] Add dark/light theme toggle
+- [ ] Mobile touch support for on-screen keyboard
+- [ ] Save progress to localStorage
+- [ ] Add sound options (piano, electric piano, synth)
+- [ ] Create onboarding tutorial for first-time users
+- [ ] Test across browsers (Chrome, Firefox, Safari)
+- [ ] Deploy to GitHub Pages or similar
+- [ ] Update repo with screenshots and usage instructions
+
+---
+
+## Tech Stack
+
+- **Frontend:** Vanilla HTML/CSS/JavaScript (keep it simple)
+- **Audio:** Web Audio API for synthesizer sounds
+- **Deployment:** GitHub Pages
+
+## MVP Goal
+
+A browser-based piano that teaches note recognition and the C Major scale through interactive lessons, helping users build muscle memory and basic keyboard familiarity before moving to a real piano.
