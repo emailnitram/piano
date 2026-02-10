@@ -274,3 +274,321 @@ kbd {
         height: 58%;
     }
 }
+
+/* =====================
+   QUIZ MODE STYLES
+   ===================== */
+
+.quiz-section {
+    margin: 30px 0;
+}
+
+.mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.quiz-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.quiz-panel.hidden {
+    display: none;
+}
+
+.quiz-display {
+    margin-bottom: 25px;
+}
+
+.quiz-instruction {
+    color: #a0a0a0;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.target-note {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.target-note.correct {
+    color: #4ade80;
+    text-shadow: 0 0 40px rgba(74, 222, 128, 0.6);
+    animation: correctPulse 0.5s ease;
+}
+
+.target-note.incorrect {
+    color: #f87171;
+    text-shadow: 0 0 40px rgba(248, 113, 113, 0.6);
+    animation: incorrectShake 0.4s ease;
+}
+
+@keyframes correctPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes incorrectShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.note-hint {
+    color: #667eea;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    min-height: 20px;
+}
+
+.quiz-controls {
+    margin-bottom: 25px;
+}
+
+.quiz-action-btn {
+    padding: 12px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.quiz-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.quiz-action-btn:active {
+    transform: translateY(0);
+}
+
+.quiz-action-btn.hidden {
+    display: none;
+}
+
+.quiz-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#streak {
+    color: #fbbf24;
+}
+
+#best-streak {
+    color: #a78bfa;
+}
+
+.feedback {
+    min-height: 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform: translateY(-10px);
+}
+
+.feedback.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.feedback.correct {
+    color: #4ade80;
+}
+
+.feedback.incorrect {
+    color: #f87171;
+}
+
+/* Key highlight animations for quiz */
+.key.highlight-target {
+    animation: targetPulse 0.5s ease;
+}
+
+.key.highlight-correct {
+    animation: correctGlow 0.5s ease;
+}
+
+.key.highlight-incorrect {
+    animation: incorrectFlash 0.5s ease;
+}
+
+@keyframes targetPulse {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+    }
+    50% { 
+        box-shadow: 0 0 20px 5px rgba(102, 126, 234, 0.6);
+    }
+}
+
+@keyframes correctGlow {
+    0% { 
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+    }
+    50% { 
+        box-shadow: 0 0 30px 10px rgba(74, 222, 128, 0.8);
+    }
+    100% { 
+        box-shadow: 0 0 0 0 rgba(74, 128, 74, 0);
+    }
+}
+
+@keyframes incorrectFlash {
+    0%, 100% { 
+        background: inherit;
+    }
+    50% { 
+        background: #f87171 !important;
+        box-shadow: 0 0 30px 10px rgba(248, 113, 113, 0.8);
+    }
+}
+
+/* Playing animation (wave effect) */
+.key.playing::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(102, 126, 234, 0.8) 0%, transparent 100%);
+    border-radius: 2px;
+    animation: waveUp 0.3s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes waveUp {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scaleY(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px) scaleY(0.5);
+    }
+}
+
+/* Responsive adjustments for quiz */
+@media (max-width: 768px) {
+    .mode-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .quiz-panel {
+        padding: 20px;
+    }
+    
+    .target-note {
+        font-size: 3.5rem;
+        min-height: 70px;
+    }
+    
+    .quiz-action-btn {
+        padding: 10px 30px;
+        font-size: 1rem;
+    }
+    
+    .quiz-stats {
+        gap: 25px;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .feedback {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quiz-panel {
+        padding: 15px;
+    }
+    
+    .target-note {
+        font-size: 2.5rem;
+        min-height: 50px;
+    }
+    
+    .quiz-stats {
+        gap: 20px;
+    }
+    
+    .stat-label {
+        font-size: 0.7rem;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+}
