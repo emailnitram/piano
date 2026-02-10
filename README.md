@@ -6,12 +6,12 @@ A simple web application to help beginners learn the fundamentals of playing pia
 
 ## Development Checklist
 
-### Phase 1: Foundation & Setup
-- [ ] Set up project structure (HTML, CSS, JS)
-- [ ] Create virtual piano keyboard UI (single octave to start)
-- [ ] Implement keyboard mapping (computer keys → piano notes)
-- [ ] Add audio playback using Web Audio API
-- [ ] Ensure responsive design for desktop/tablet
+### Phase 1: Foundation & Setup ✅
+- [x] Set up project structure (HTML, CSS, JS)
+- [x] Create virtual piano keyboard UI (single octave to start)
+- [x] Implement keyboard mapping (computer keys → piano notes)
+- [x] Add audio playback using Web Audio API
+- [x] Ensure responsive design for desktop/tablet
 
 ### Phase 2: Note Recognition
 - [ ] Display note names on piano keys (C, D, E, F, G, A, B)
