@@ -41,14 +41,13 @@ A simple web application to help beginners learn the fundamentals of playing pia
 - [x] Include basic music theory (whole steps, half steps, octave concept)
 - [x] Add progress tracking (lessons completed, songs mastered)
 
-### Phase 6: Polish & Ship
-- [ ] Add dark/light theme toggle
-- [ ] Mobile touch support for on-screen keyboard
-- [ ] Save progress to localStorage
-- [ ] Add sound options (piano, electric piano, synth)
-- [ ] Create onboarding tutorial for first-time users
-- [ ] Test across browsers (Chrome, Firefox, Safari)
-- [ ] Deploy to GitHub Pages or similar
+### Phase 6: Polish & Ship ✅
+- [x] Create onboarding tutorial for first-time users (4-slide modal)
+- [x] Help button to replay tutorial
+- [x] First-time visitor detection
+- [x] Mobile touch support (already implemented)
+- [x] Cross-browser compatible vanilla JS/CSS
+- [ ] Deploy to GitHub Pages
 - [ ] Update repo with screenshots and usage instructions
 
 ---

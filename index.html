@@ -7,10 +7,51 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Onboarding Modal -->
+    <div id="onboarding-modal" class="onboarding-modal">
+        <div class="onboarding-content">
+            <div class="onboarding-slide active" data-slide="0">
+                <div class="onboarding-icon">🎹</div>
+                <h2>Welcome to Piano Learning App!</h2>
+                <p>Learn to play piano right in your browser. No piano required - just your keyboard!</p>
+            </div>
+            <div class="onboarding-slide" data-slide="1">
+                <div class="onboarding-icon">⌨️</div>
+                <h2>Use Your Computer Keyboard</h2>
+                <p>The keys <kbd>A</kbd> through <kbd>K</kbd> map to piano notes C through C. Try it now!</p>
+            </div>
+            <div class="onboarding-slide" data-slide="2">
+                <div class="onboarding-icon">🎯</div>
+                <h2>5 Learning Modes</h2>
+                <p><strong>Free Play</strong> - Just play<br>
+                <strong>Note Quiz</strong> - Learn notes<br>
+                <strong>Scales</strong> - Practice C Major<br>
+                <strong>Songs</strong> - Play 3 classics<br>
+                <strong>Lessons</strong> - Technique & theory</p>
+            </div>
+            <div class="onboarding-slide" data-slide="3">
+                <div class="onboarding-icon">✨</div>
+                <h2>You're Ready!</h2>
+                <p>Press any key to hear a note. Switch modes to start learning. Your progress saves automatically!</p>
+            </div>
+            <div class="onboarding-nav">
+                <button id="onboarding-prev" class="onboarding-btn secondary">Previous</button>
+                <div class="onboarding-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                    <span class="dot" data-slide="3"></span>
+                </div>
+                <button id="onboarding-next" class="onboarding-btn">Next</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>🎹 Piano Learning App</h1>
             <p>Press keys on your keyboard or click the piano to play</p>
+            <button id="help-btn" class="help-btn" title="Show Tutorial">❓</button>
         </header>
 
         <div class="instructions">
