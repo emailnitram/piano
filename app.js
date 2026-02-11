@@ -151,7 +151,6 @@ class PianoApp {
     
     setMode(mode) {
         this.mode = mode;
-        
         if (mode === 'free') {
             this.quizActive = false;
             this.clearFeedback();
