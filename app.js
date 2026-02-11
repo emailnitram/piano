@@ -77,7 +77,9 @@ class PianoApp {
         this.setupScalesUI();
         this.setupSongsUI();
         this.setupLessonsUI();
+        this.setupOnboarding();
         this.updateProgressDisplay();
+        this.checkFirstVisit();
     }
     
     setupAudio() {
@@ -1096,6 +1098,134 @@ class PianoApp {
         if (songsProgress) {
             const count = this.progress.songsMastered.length;
             songsProgress.textContent = `${count} song${count !== 1 ? 's' : ''} mastered`;
+        }
+    }
+    
+    // Onboarding / Tutorial
+    checkFirstVisit() {
+        try {
+            const hasVisited = localStorage.getItem('pianoAppVisited');
+            if (!hasVisited) {
+                this.showOnboarding();
+            }
+        } catch (e) {
+            console.log('Could not check first visit');
+        }
+    }
+    
+    setupOnboarding() {
+        const modal = document.getElementById('onboarding-modal');
+        const prevBtn = document.getElementById('onboarding-prev');
+        const nextBtn = document.getElementById('onboarding-next');
+        const helpBtn = document.getElementById('help-btn');
+        
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => {
+                this.showOnboarding();
+            });
+        }
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                this.prevOnboardingSlide();
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                this.nextOnboardingSlide();
+            });
+        }
+        
+        // Close on click outside
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.hideOnboarding();
+                }
+            });
+        }
+        
+        // Dot navigation
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                this.goToSlide(index);
+            });
+        });
+    }
+    
+    showOnboarding() {
+        const modal = document.getElementById('onboarding-modal');
+        if (modal) {
+            modal.classList.add('active');
+            this.currentSlide = 0;
+            this.updateOnboardingUI();
+        }
+    }
+    
+    hideOnboarding() {
+        const modal = document.getElementById('onboarding-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            // Mark as visited
+            try {
+                localStorage.setItem('pianoAppVisited', 'true');
+            } catch (e) {
+                console.log('Could not save visit status');
+            }
+        }
+    }
+    
+    nextOnboardingSlide() {
+        const slides = document.querySelectorAll('.onboarding-slide');
+        if (this.currentSlide < slides.length - 1) {
+            this.currentSlide++;
+            this.updateOnboardingUI();
+        } else {
+            this.hideOnboarding();
+        }
+    }
+    
+    prevOnboardingSlide() {
+        if (this.currentSlide > 0) {
+            this.currentSlide--;
+            this.updateOnboardingUI();
+        }
+    }
+    
+    goToSlide(index) {
+        this.currentSlide = index;
+        this.updateOnboardingUI();
+    }
+    
+    updateOnboardingUI() {
+        const slides = document.querySelectorAll('.onboarding-slide');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('onboarding-prev');
+        const nextBtn = document.getElementById('onboarding-next');
+        
+        // Update slides
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === this.currentSlide);
+        });
+        
+        // Update dots
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentSlide);
+        });
+        
+        // Update buttons
+        if (prevBtn) {
+            prevBtn.disabled = this.currentSlide === 0;
+            prevBtn.style.opacity = this.currentSlide === 0 ? '0.5' : '1';
+        }
+        
+        if (nextBtn) {
+            if (this.currentSlide === slides.length - 1) {
+                nextBtn.textContent = 'Get Started!';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
         }
     }
 }
