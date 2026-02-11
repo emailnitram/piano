@@ -817,13 +817,6 @@ class PianoApp {
             this.updateProgressDisplay();
         }
     }
-            resetSongBtn.classList.add('hidden');
-            pauseSongBtn.textContent = 'Pause';
-            
-            this.updateSongDisplay();
-            this.updateStatus('Songs Mode - Select a song and press Start!');
-        }
-    }
     
     startQuiz() {
         this.quizActive = true;
