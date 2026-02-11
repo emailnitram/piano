@@ -6,7 +6,7 @@ class PianoApp {
         this.statusText = document.getElementById('status-text');
         
         // Quiz mode state
-        this.mode = 'free'; // 'free', 'quiz', or 'scales'
+        this.mode = 'free'; // 'free', 'quiz', 'scales', or 'songs'
         this.quizActive = false;
         this.targetNote = null;
         this.score = 0;
@@ -27,6 +27,37 @@ class PianoApp {
         this.metronomeInterval = null;
         this.metronomeBPM = 60;
         
+        // Songs mode state
+        this.songActive = false;
+        this.songPaused = false;
+        this.songIndex = 0;
+        this.currentSong = null;
+        this.songSpeed = 0.5;
+        this.waitMode = true;
+        this.loopSong = false;
+        this.songPlaybackInterval = null;
+        this.awaitingSongNote = false;
+        this.fallingNotesOffset = 0;
+        
+        // Song library
+        this.songs = {
+            twinkle: {
+                name: 'Twinkle Twinkle Little Star',
+                notes: ['C', 'C', 'G', 'G', 'A', 'A', 'G', 'F', 'F', 'E', 'E', 'D', 'D', 'C'],
+                tempo: 500 // ms per note at 100% speed
+            },
+            mary: {
+                name: 'Mary Had a Little Lamb',
+                notes: ['E', 'D', 'C', 'D', 'E', 'E', 'E', 'D', 'D', 'D', 'E', 'G', 'G'],
+                tempo: 400
+            },
+            ode: {
+                name: 'Ode to Joy',
+                notes: ['E', 'E', 'F', 'G', 'G', 'F', 'E', 'D', 'C', 'C', 'D', 'E', 'E', 'D', 'D'],
+                tempo: 450
+            }
+        };
+        
         this.init();
     }
     
@@ -36,6 +67,7 @@ class PianoApp {
         this.setupKeyboardShortcuts();
         this.setupQuizUI();
         this.setupScalesUI();
+        this.setupSongsUI();
     }
     
     setupAudio() {
@@ -130,16 +162,20 @@ class PianoApp {
         const freePlayBtn = document.getElementById('free-play-btn');
         const quizBtn = document.getElementById('quiz-btn');
         const scalesBtn = document.getElementById('scales-btn');
+        const songsBtn = document.getElementById('songs-btn');
         const quizPanel = document.getElementById('quiz-panel');
         const scalesPanel = document.getElementById('scales-panel');
+        const songsPanel = document.getElementById('songs-panel');
         
         freePlayBtn.addEventListener('click', () => {
             this.setMode('free');
             freePlayBtn.classList.add('active');
             quizBtn.classList.remove('active');
             scalesBtn.classList.remove('active');
+            songsBtn.classList.remove('active');
             quizPanel.classList.add('hidden');
             scalesPanel.classList.add('hidden');
+            songsPanel.classList.add('hidden');
         });
         
         quizBtn.addEventListener('click', () => {
@@ -147,8 +183,10 @@ class PianoApp {
             quizBtn.classList.add('active');
             freePlayBtn.classList.remove('active');
             scalesBtn.classList.remove('active');
+            songsBtn.classList.remove('active');
             quizPanel.classList.remove('hidden');
             scalesPanel.classList.add('hidden');
+            songsPanel.classList.add('hidden');
         });
         
         scalesBtn.addEventListener('click', () => {
@@ -156,8 +194,21 @@ class PianoApp {
             scalesBtn.classList.add('active');
             freePlayBtn.classList.remove('active');
             quizBtn.classList.remove('active');
+            songsBtn.classList.remove('active');
             quizPanel.classList.add('hidden');
             scalesPanel.classList.remove('hidden');
+            songsPanel.classList.add('hidden');
+        });
+        
+        songsBtn.addEventListener('click', () => {
+            this.setMode('songs');
+            songsBtn.classList.add('active');
+            freePlayBtn.classList.remove('active');
+            quizBtn.classList.remove('active');
+            scalesBtn.classList.remove('active');
+            quizPanel.classList.add('hidden');
+            scalesPanel.classList.add('hidden');
+            songsPanel.classList.remove('hidden');
         });
         
         // Quiz control buttons
@@ -372,16 +423,302 @@ class PianoApp {
         feedbackEl.textContent = '';
     }
     
+    setupSongsUI() {
+        // Songs control buttons
+        const startSongBtn = document.getElementById('start-song-btn');
+        const pauseSongBtn = document.getElementById('pause-song-btn');
+        const resetSongBtn = document.getElementById('reset-song-btn');
+        const songSelect = document.getElementById('song-select');
+        const speedSlider = document.getElementById('speed-slider');
+        const speedValue = document.getElementById('speed-value');
+        const waitModeToggle = document.getElementById('wait-mode-toggle');
+        const loopToggle = document.getElementById('loop-toggle');
+        
+        startSongBtn.addEventListener('click', () => {
+            this.startSong();
+            startSongBtn.classList.add('hidden');
+            pauseSongBtn.classList.remove('hidden');
+            resetSongBtn.classList.remove('hidden');
+        });
+        
+        pauseSongBtn.addEventListener('click', () => {
+            if (this.songPaused) {
+                this.resumeSong();
+                pauseSongBtn.textContent = 'Pause';
+            } else {
+                this.pauseSong();
+                pauseSongBtn.textContent = 'Resume';
+            }
+        });
+        
+        resetSongBtn.addEventListener('click', () => {
+            this.resetSong();
+            startSongBtn.classList.remove('hidden');
+            pauseSongBtn.classList.add('hidden');
+            resetSongBtn.classList.add('hidden');
+            pauseSongBtn.textContent = 'Pause';
+        });
+        
+        songSelect.addEventListener('change', () => {
+            if (this.songActive) {
+                this.resetSong();
+                startSongBtn.classList.remove('hidden');
+                pauseSongBtn.classList.add('hidden');
+                resetSongBtn.classList.add('hidden');
+                pauseSongBtn.textContent = 'Pause';
+            }
+            this.updateSongDisplay();
+        });
+        
+        speedSlider.addEventListener('input', (e) => {
+            this.songSpeed = parseFloat(e.target.value);
+            speedValue.textContent = Math.round(this.songSpeed * 100) + '%';
+            if (this.songActive && !this.songPaused) {
+                this.updateSongPlaybackSpeed();
+            }
+        });
+        
+        waitModeToggle.addEventListener('change', (e) => {
+            this.waitMode = e.target.checked;
+        });
+        
+        loopToggle.addEventListener('change', (e) => {
+            this.loopSong = e.target.checked;
+        });
+        
+        // Initialize song display
+        this.updateSongDisplay();
+    }
+    
+    updateSongDisplay() {
+        const songSelect = document.getElementById('song-select');
+        const songKey = songSelect.value;
+        const song = this.songs[songKey];
+        
+        const notesDisplay = document.getElementById('notes-display');
+        const progressText = document.getElementById('progress-text');
+        
+        if (song) {
+            notesDisplay.textContent = song.notes.join(' → ');
+            progressText.textContent = `0 / ${song.notes.length} notes`;
+        }
+        
+        this.updateProgressBar();
+    }
+    
+    startSong() {
+        const songSelect = document.getElementById('song-select');
+        const songKey = songSelect.value;
+        this.currentSong = this.songs[songKey];
+        
+        if (!this.currentSong) return;
+        
+        this.songActive = true;
+        this.songPaused = false;
+        this.songIndex = 0;
+        this.awaitingSongNote = true;
+        
+        this.showSongsFeedback(`Playing: ${this.currentSong.name}`);
+        this.updateStatus(`Song Mode: ${this.currentSong.name}`);
+        
+        this.highlightNextSongNote();
+        this.updateProgressBar();
+    }
+    
+    pauseSong() {
+        this.songPaused = true;
+        this.stopSongPlayback();
+        this.showSongsFeedback('Paused - Press Resume to continue');
+    }
+    
+    resumeSong() {
+        this.songPaused = false;
+        this.showSongsFeedback(`Playing: ${this.currentSong.name}`);
+        this.highlightNextSongNote();
+    }
+    
+    resetSong() {
+        this.songActive = false;
+        this.songPaused = false;
+        this.songIndex = 0;
+        this.awaitingSongNote = false;
+        this.stopSongPlayback();
+        this.clearSongHighlights();
+        
+        this.updateSongDisplay();
+        this.clearSongsFeedback();
+        this.updateStatus('Songs Mode - Select a song and press Start!');
+    }
+    
+    checkSongProgress(playedNote) {
+        if (!this.songActive || this.songPaused) return false;
+        
+        const targetNote = this.currentSong.notes[this.songIndex];
+        
+        if (playedNote === targetNote) {
+            // Correct note played
+            this.highlightNote(playedNote, 'correct');
+            this.songIndex++;
+            
+            // Check if song is complete
+            if (this.songIndex >= this.currentSong.notes.length) {
+                this.songComplete();
+                return true;
+            }
+            
+            // Continue to next note
+            this.updateProgressBar();
+            this.highlightNextSongNote();
+            return true;
+        } else {
+            // Wrong note
+            if (this.waitMode) {
+                // In wait mode, don't advance - flash incorrect
+                this.highlightNote(playedNote, 'incorrect');
+                this.showSongsFeedback(`That's ${playedNote}. Try ${targetNote}!`);
+                return false;
+            }
+            // If not in wait mode, would auto-advance (not implemented for simplicity)
+            return false;
+        }
+    }
+    
+    songComplete() {
+        this.stopSongPlayback();
+        this.updateProgressBar();
+        
+        if (this.loopSong) {
+            this.showSongsFeedback('🎵 Song Complete! Looping...');
+            setTimeout(() => {
+                this.songIndex = 0;
+                this.awaitingSongNote = true;
+                this.highlightNextSongNote();
+                this.updateProgressBar();
+            }, 1500);
+        } else {
+            this.showSongsFeedback('🎉 Song Complete! Great job!');
+            this.updateStatus('Song Complete! Press Reset to play again.');
+            
+            // Flash all song notes in sequence
+            this.flashSongSuccess();
+            
+            // Reset UI after delay
+            setTimeout(() => {
+                const startSongBtn = document.getElementById('start-song-btn');
+                const pauseSongBtn = document.getElementById('pause-song-btn');
+                const resetSongBtn = document.getElementById('reset-song-btn');
+                
+                startSongBtn.classList.remove('hidden');
+                pauseSongBtn.classList.add('hidden');
+                resetSongBtn.classList.add('hidden');
+                pauseSongBtn.textContent = 'Pause';
+                
+                this.resetSong();
+            }, 3000);
+        }
+    }
+    
+    flashSongSuccess() {
+        this.currentSong.notes.forEach((note, index) => {
+            setTimeout(() => {
+                this.highlightNote(note, 'correct');
+            }, index * 150);
+        });
+    }
+    
+    highlightNextSongNote() {
+        this.clearSongHighlights();
+        const targetNote = this.currentSong.notes[this.songIndex];
+        const key = document.querySelector(`.key[data-note="${targetNote}"]`);
+        
+        if (key) {
+            key.classList.add('song-target');
+        }
+        
+        // Update falling notes display
+        this.updateFallingNotes();
+    }
+    
+    clearSongHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('song-target');
+        });
+    }
+    
+    updateFallingNotes() {
+        const notesDisplay = document.getElementById('notes-display');
+        if (!this.currentSong || !this.songActive) return;
+        
+        const notes = this.currentSong.notes;
+        const current = this.songIndex;
+        
+        // Show current note and upcoming notes
+        let displayText = '';
+        for (let i = 0; i < notes.length; i++) {
+            if (i === current) {
+                displayText += `<span class="current-note">[${notes[i]}]</span>`;
+            } else if (i < current) {
+                displayText += `<span class="played-note">${notes[i]}</span>`;
+            } else {
+                displayText += notes[i];
+            }
+            if (i < notes.length - 1) {
+                displayText += ' → ';
+            }
+        }
+        
+        notesDisplay.innerHTML = displayText;
+    }
+    
+    updateProgressBar() {
+        if (!this.currentSong) return;
+        
+        const progressFill = document.getElementById('song-progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        const progress = (this.songIndex / this.currentSong.notes.length) * 100;
+        progressFill.style.width = progress + '%';
+        progressText.textContent = `${this.songIndex} / ${this.currentSong.notes.length} notes`;
+    }
+    
+    updateSongPlaybackSpeed() {
+        // In a full implementation, this would adjust timing
+        // For now, it's just a visual control
+    }
+    
+    stopSongPlayback() {
+        if (this.songPlaybackInterval) {
+            clearInterval(this.songPlaybackInterval);
+            this.songPlaybackInterval = null;
+        }
+    }
+    
+    showSongsFeedback(message) {
+        const feedbackEl = document.getElementById('songs-feedback');
+        feedbackEl.innerHTML = message;
+        feedbackEl.classList.add('show');
+    }
+    
+    clearSongsFeedback() {
+        const feedbackEl = document.getElementById('songs-feedback');
+        feedbackEl.classList.remove('show');
+        feedbackEl.textContent = '';
+    }
+    
     setMode(mode) {
         this.mode = mode;
         
         // Reset all mode states
         this.quizActive = false;
         this.scaleActive = false;
+        this.songActive = false;
         this.stopMetronome();
+        this.stopSongPlayback();
         this.clearFeedback();
         this.clearScalesFeedback();
+        this.clearSongsFeedback();
         this.clearScaleHighlights();
+        this.clearSongHighlights();
         
         if (mode === 'free') {
             this.updateStatus('Free Play Mode - Play any note!');
@@ -415,6 +752,22 @@ class PianoApp {
             resetScaleBtn.classList.add('hidden');
             
             this.updateStatus('Scales Mode - Press Start to begin!');
+        } else if (mode === 'songs') {
+            // Reset songs UI state
+            this.songIndex = 0;
+            this.songPaused = false;
+            
+            const startSongBtn = document.getElementById('start-song-btn');
+            const pauseSongBtn = document.getElementById('pause-song-btn');
+            const resetSongBtn = document.getElementById('reset-song-btn');
+            
+            startSongBtn.classList.remove('hidden');
+            pauseSongBtn.classList.add('hidden');
+            resetSongBtn.classList.add('hidden');
+            pauseSongBtn.textContent = 'Pause';
+            
+            this.updateSongDisplay();
+            this.updateStatus('Songs Mode - Select a song and press Start!');
         }
     }
     
@@ -571,6 +924,9 @@ class PianoApp {
         } else if (this.mode === 'scales' && this.scaleActive) {
             // Check scale progress
             this.checkScaleProgress(note);
+        } else if (this.mode === 'songs' && this.songActive) {
+            // Check song progress
+            this.checkSongProgress(note);
         } else {
             this.updateStatus(`Playing: ${note} (${frequency.toFixed(2)} Hz)`);
         }
