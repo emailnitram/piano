@@ -106,6 +106,7 @@
                 <button id="quiz-btn" class="mode-btn">Note Quiz</button>
                 <button id="scales-btn" class="mode-btn">Scales</button>
                 <button id="songs-btn" class="mode-btn">Songs</button>
+                <button id="lessons-btn" class="mode-btn">Lessons</button>
             </div>
             
             <div id="quiz-panel" class="quiz-panel hidden">
@@ -230,6 +231,168 @@
                     </div>
                 </div>
                 <div class="songs-feedback" id="songs-feedback"></div>
+            </div>
+            
+            <div id="lessons-panel" class="lessons-panel hidden">
+                <div class="lessons-display">
+                    <h3>Piano Basics & Technique</h3>
+                    <div class="lessons-nav">
+                        <button class="lesson-tab active" data-lesson="hand-position">Hand Position</button>
+                        <button class="lesson-tab" data-lesson="posture">Posture</button>
+                        <button class="lesson-tab" data-lesson="theory">Music Theory</button>
+                    </div>
+                    
+                    <div id="lesson-content" class="lesson-content">
+                        <div class="lesson-section" id="hand-position-lesson">
+                            <h4>Proper Hand Position</h4>
+                            <div class="hand-position-visual">
+                                <div class="hand-diagram">
+                                    <div class="hand-outline">
+                                        <div class="finger finger-1">1</div>
+                                        <div class="finger finger-2">2</div>
+                                        <div class="finger finger-3">3</div>
+                                        <div class="finger finger-4">4</div>
+                                        <div class="finger finger-5">5</div>
+                                    </div>
+                                    <div class="position-labels">
+                                        <span>Thumb</span>
+                                        <span>Index</span>
+                                        <span>Middle</span>
+                                        <span>Ring</span>
+                                        <span>Pinky</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lesson-tips">
+                                <ul>
+                                    <li><strong>Curve your fingers</strong> like you're holding a small ball</li>
+                                    <li><strong>Thumb stays straight</strong>, other fingers curved</li>
+                                    <li><strong>Wrist level</strong> with the keyboard - not too high or low</li>
+                                    <li><strong>Fingertips</strong> on the keys, not flat fingers</li>
+                                    <li><strong>Start position:</strong> Thumb (1) on middle C</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-section hidden" id="posture-lesson">
+                            <h4>Proper Posture</h4>
+                            <div class="posture-visual">
+                                <div class="posture-diagram">
+                                    <div class="seat-height">🪑</div>
+                                    <div class="back-straight">↕️</div>
+                                    <div class="feet-flat">👣</div>
+                                </div>
+                            </div>
+                            <div class="lesson-tips">
+                                <ul>
+                                    <li><strong>Sit tall</strong> - Back straight, shoulders relaxed</li>
+                                    <li><strong>Elbow height</strong> - Arms should form a gentle arc</li>
+                                    <li><strong>Feet flat</strong> on the floor for stability</li>
+                                    <li><strong>Distance:</strong> About forearm's length from piano</li>
+                                    <li><strong>Center yourself</strong> on middle C</li>
+                                    <li><strong>Relaxed shoulders</strong> - no tension in neck or arms</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lesson-section hidden" id="theory-lesson">
+                            <h4>Basic Music Theory</h4>
+                            <div class="theory-grid">
+                                <div class="theory-card">
+                                    <h5>Whole Steps</h5>
+                                    <div class="step-demo">
+                                        <span class="note">C</span>
+                                        <span class="arrow">→→</span>
+                                        <span class="note">D</span>
+                                    </div>
+                                    <p>Two half steps apart. Skip one key.</p>
+                                </div>
+                                <div class="theory-card">
+                                    <h5>Half Steps</h5>
+                                    <div class="step-demo">
+                                        <span class="note">C</span>
+                                        <span class="arrow">→</span>
+                                        <span class="note">C#</span>
+                                    </div>
+                                    <p>Adjacent keys. No keys in between.</p>
+                                </div>
+                                <div class="theory-card">
+                                    <h5>Octave</h5>
+                                    <div class="step-demo">
+                                        <span class="note">C</span>
+                                        <span class="arrow">———</span>
+                                        <span class="note">C</span>
+                                    </div>
+                                    <p>8 notes apart. Same letter, double frequency.</p>
+                                </div>
+                            </div>
+                            <div class="lesson-tips">
+                                <ul>
+                                    <li><strong>Major Scale Pattern:</strong> W-W-H-W-W-W-H (Whole/Half steps)</li>
+                                    <li><strong>C Major:</strong> No sharps or flats - all white keys!</li>
+                                    <li><strong>Intervals:</strong> Distance between two notes</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lessons-progress">
+                    <h4>Your Progress</h4>
+                    <div class="progress-grid">
+                        <div class="progress-item">
+                            <div class="progress-icon">🎯</div>
+                            <div class="progress-info">
+                                <span class="progress-name">Note Quiz</span>
+                                <span class="progress-value" id="quiz-progress">0 notes learned</span>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-icon">🎹</div>
+                            <div class="progress-info">
+                                <span class="progress-name">Scales</span>
+                                <span class="progress-value" id="scales-progress">0 scales completed</span>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-icon">🎵</div>
+                            <div class="progress-info">
+                                <span class="progress-name">Songs</span>
+                                <span class="progress-value" id="songs-progress">0 songs mastered</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="keyboard-shortcuts-ref">
+                    <h4>Quick Reference</h4>
+                    <div class="shortcuts-grid">
+                        <div class="shortcut-item">
+                            <kbd>A</kbd> - <span>C (Thumb)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>S</kbd> - <span>D (Index)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>D</kbd> - <span>E (Middle)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>F</kbd> - <span>F (Thumb)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>G</kbd> - <span>G (Index)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>H</kbd> - <span>A (Middle)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>J</kbd> - <span>B (Ring)</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <kbd>K</kbd> - <span>C (Pinky)</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

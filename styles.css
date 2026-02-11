@@ -1313,3 +1313,419 @@ kbd {
         width: 100%;
     }
 }
+
+/* =====================
+   LESSONS MODE STYLES
+   ===================== */
+
+.lessons-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.lessons-panel.hidden {
+    display: none;
+}
+
+.lessons-display h3 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+}
+
+/* Lesson Tabs */
+.lessons-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.lesson-tab {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #a0a0a0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lesson-tab:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+.lesson-tab.active {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Lesson Content */
+.lesson-content {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.lesson-section {
+    animation: fadeIn 0.3s ease;
+}
+
+.lesson-section.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lesson-section h4 {
+    color: #fbbf24;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+/* Hand Position Visual */
+.hand-position-visual {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.hand-diagram {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.hand-outline {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.finger {
+    width: 35px;
+    height: 50px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+}
+
+.finger-1 {
+    height: 35px;
+    margin-top: 15px;
+    border-radius: 8px 8px 4px 4px;
+}
+
+.position-labels {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    color: #a0a0a0;
+    font-size: 0.75rem;
+}
+
+.position-labels span {
+    width: 35px;
+    text-align: center;
+}
+
+/* Lesson Tips */
+.lesson-tips {
+    text-align: left;
+}
+
+.lesson-tips ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lesson-tips li {
+    color: #ccc;
+    padding: 10px 0;
+    padding-left: 25px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lesson-tips li:last-child {
+    border-bottom: none;
+}
+
+.lesson-tips li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #4ade80;
+    font-weight: bold;
+}
+
+.lesson-tips strong {
+    color: #fbbf24;
+}
+
+/* Posture Visual */
+.posture-visual {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.posture-diagram {
+    display: flex;
+    gap: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.posture-diagram > div {
+    font-size: 2.5rem;
+}
+
+/* Theory Grid */
+.theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.theory-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+.theory-card h5 {
+    color: #fbbf24;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.step-demo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.step-demo .note {
+    color: #fff;
+    font-weight: bold;
+    background: rgba(102, 126, 234, 0.3);
+    padding: 5px 12px;
+    border-radius: 6px;
+}
+
+.step-demo .arrow {
+    color: #667eea;
+    font-size: 1.5rem;
+}
+
+.theory-card p {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+}
+
+/* Progress Section */
+.lessons-progress {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.lessons-progress h4 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.progress-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.progress-icon {
+    font-size: 1.8rem;
+}
+
+.progress-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-name {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+}
+
+.progress-value {
+    color: #4ade80;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Keyboard Shortcuts Reference */
+.keyboard-shortcuts-ref {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.keyboard-shortcuts-ref h4 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+.shortcut-item kbd {
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    border: 1px solid #555;
+}
+
+.shortcut-item span {
+    color: #ccc;
+}
+
+/* Responsive adjustments for lessons */
+@media (max-width: 768px) {
+    .lessons-panel {
+        padding: 20px;
+    }
+    
+    .lessons-display h3 {
+        font-size: 1.5rem;
+    }
+    
+    .lesson-tab {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .lesson-content {
+        padding: 20px;
+    }
+    
+    .lesson-section h4 {
+        font-size: 1.2rem;
+    }
+    
+    .theory-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .shortcuts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .lessons-panel {
+        padding: 15px;
+    }
+    
+    .lessons-display h3 {
+        font-size: 1.3rem;
+    }
+    
+    .lessons-nav {
+        gap: 5px;
+    }
+    
+    .lesson-tab {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .lesson-content {
+        padding: 15px;
+    }
+    
+    .finger {
+        width: 30px;
+        height: 45px;
+        font-size: 1rem;
+    }
+    
+    .finger-1 {
+        height: 30px;
+        margin-top: 15px;
+    }
+    
+    .position-labels {
+        font-size: 0.65rem;
+    }
+    
+    .position-labels span {
+        width: 30px;
+    }
+    
+    .shortcuts-grid {
+        grid-template-columns: 1fr;
+    }
+}
