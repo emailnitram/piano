@@ -156,6 +156,24 @@ class PianoApp {
             this.clearFeedback();
             this.updateStatus('Free Play Mode - Play any note!');
         } else {
+            // Entering quiz mode - reset quiz UI state
+            this.quizActive = false;
+            this.targetNote = null;
+            this.awaitingAnswer = false;
+            this.clearFeedback();
+            
+            // Reset UI to initial state
+            const targetNoteEl = document.getElementById('target-note');
+            const noteHintEl = document.getElementById('note-hint');
+            const startQuizBtn = document.getElementById('start-quiz-btn');
+            const nextNoteBtn = document.getElementById('next-note-btn');
+            
+            targetNoteEl.textContent = '?';
+            targetNoteEl.classList.remove('correct', 'incorrect');
+            noteHintEl.textContent = '';
+            startQuizBtn.classList.remove('hidden');
+            nextNoteBtn.classList.add('hidden');
+            
             this.updateStatus('Quiz Mode - Press Start to begin!');
         }
     }
