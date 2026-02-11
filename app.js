@@ -6,7 +6,7 @@ class PianoApp {
         this.statusText = document.getElementById('status-text');
         
         // Quiz mode state
-        this.mode = 'free'; // 'free' or 'quiz'
+        this.mode = 'free'; // 'free', 'quiz', or 'scales'
         this.quizActive = false;
         this.targetNote = null;
         this.score = 0;
@@ -17,6 +17,16 @@ class PianoApp {
         // All available notes for quiz
         this.notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
         
+        // Scales mode state
+        this.scaleActive = false;
+        this.scaleNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C2'];
+        this.scaleIndex = 0;
+        this.scaleDescending = false;
+        this.scaleDirection = 'ascending'; // 'ascending' or 'descending'
+        this.metronomeActive = true;
+        this.metronomeInterval = null;
+        this.metronomeBPM = 60;
+        
         this.init();
     }
     
@@ -25,6 +35,7 @@ class PianoApp {
         this.setupEventListeners();
         this.setupKeyboardShortcuts();
         this.setupQuizUI();
+        this.setupScalesUI();
     }
     
     setupAudio() {
@@ -118,20 +129,35 @@ class PianoApp {
         // Mode toggle buttons
         const freePlayBtn = document.getElementById('free-play-btn');
         const quizBtn = document.getElementById('quiz-btn');
+        const scalesBtn = document.getElementById('scales-btn');
         const quizPanel = document.getElementById('quiz-panel');
+        const scalesPanel = document.getElementById('scales-panel');
         
         freePlayBtn.addEventListener('click', () => {
             this.setMode('free');
             freePlayBtn.classList.add('active');
             quizBtn.classList.remove('active');
+            scalesBtn.classList.remove('active');
             quizPanel.classList.add('hidden');
+            scalesPanel.classList.add('hidden');
         });
         
         quizBtn.addEventListener('click', () => {
             this.setMode('quiz');
             quizBtn.classList.add('active');
             freePlayBtn.classList.remove('active');
+            scalesBtn.classList.remove('active');
             quizPanel.classList.remove('hidden');
+            scalesPanel.classList.add('hidden');
+        });
+        
+        scalesBtn.addEventListener('click', () => {
+            this.setMode('scales');
+            scalesBtn.classList.add('active');
+            freePlayBtn.classList.remove('active');
+            quizBtn.classList.remove('active');
+            quizPanel.classList.add('hidden');
+            scalesPanel.classList.remove('hidden');
         });
         
         // Quiz control buttons
@@ -149,20 +175,221 @@ class PianoApp {
         });
     }
     
+    setupScalesUI() {
+        // Scales control buttons
+        const startScaleBtn = document.getElementById('start-scale-btn');
+        const resetScaleBtn = document.getElementById('reset-scale-btn');
+        const descendingToggle = document.getElementById('descending-toggle');
+        const metronomeToggle = document.getElementById('metronome-toggle');
+        
+        startScaleBtn.addEventListener('click', () => {
+            this.startScalePractice();
+            startScaleBtn.classList.add('hidden');
+            resetScaleBtn.classList.remove('hidden');
+        });
+        
+        resetScaleBtn.addEventListener('click', () => {
+            this.resetScalePractice();
+            resetScaleBtn.classList.add('hidden');
+            startScaleBtn.classList.remove('hidden');
+        });
+        
+        descendingToggle.addEventListener('change', (e) => {
+            this.scaleDescending = e.target.checked;
+            this.scaleDirection = this.scaleDescending ? 'descending' : 'ascending';
+            if (this.scaleActive) {
+                this.resetScalePractice();
+                this.startScalePractice();
+            }
+        });
+        
+        metronomeToggle.addEventListener('change', (e) => {
+            this.metronomeActive = e.target.checked;
+            if (this.scaleActive) {
+                if (this.metronomeActive) {
+                    this.startMetronome();
+                } else {
+                    this.stopMetronome();
+                }
+            }
+        });
+    }
+    
+    startScalePractice() {
+        this.scaleActive = true;
+        this.scaleIndex = this.scaleDescending ? this.scaleNotes.length - 1 : 0;
+        this.updateScaleDisplay();
+        this.highlightNextScaleNote();
+        
+        if (this.metronomeActive) {
+            this.startMetronome();
+        }
+        
+        this.updateStatus(`Scale Practice: ${this.scaleDirection} C Major`);
+        this.showScalesFeedback('Play the highlighted note!');
+    }
+    
+    resetScalePractice() {
+        this.scaleActive = false;
+        this.stopMetronome();
+        this.scaleIndex = 0;
+        this.clearScaleHighlights();
+        
+        const currentNoteEl = document.getElementById('current-scale-note');
+        currentNoteEl.textContent = 'Press Start to begin';
+        
+        this.clearScalesFeedback();
+        this.updateStatus('Scales Mode - Press Start to begin!');
+    }
+    
+    checkScaleProgress(playedNote) {
+        if (!this.scaleActive) return false;
+        
+        const targetNote = this.scaleNotes[this.scaleIndex];
+        
+        if (playedNote === targetNote) {
+            // Correct note played
+            this.highlightNote(playedNote, 'correct');
+            
+            // Move to next note
+            if (this.scaleDescending) {
+                this.scaleIndex--;
+            } else {
+                this.scaleIndex++;
+            }
+            
+            // Check if scale is complete
+            if (this.scaleDescending && this.scaleIndex < 0) {
+                this.scaleComplete();
+                return true;
+            } else if (!this.scaleDescending && this.scaleIndex >= this.scaleNotes.length) {
+                this.scaleComplete();
+                return true;
+            }
+            
+            // Continue to next note
+            this.updateScaleDisplay();
+            setTimeout(() => {
+                if (this.scaleActive) {
+                    this.highlightNextScaleNote();
+                }
+            }, 300);
+            
+            return true;
+        } else {
+            // Wrong note - flash it as incorrect
+            this.highlightNote(playedNote, 'incorrect');
+            this.showScalesFeedback(`That's ${playedNote}. Try ${targetNote}!`);
+            return false;
+        }
+    }
+    
+    scaleComplete() {
+        this.stopMetronome();
+        this.showScalesFeedback('🎉 Scale Complete! Great job!');
+        this.updateStatus('Scale Complete! Press Reset to practice again.');
+        
+        // Flash all keys in sequence
+        this.flashScaleSuccess();
+    }
+    
+    flashScaleSuccess() {
+        const keys = this.scaleDescending ? [...this.scaleNotes].reverse() : this.scaleNotes;
+        keys.forEach((note, index) => {
+            setTimeout(() => {
+                this.highlightNote(note, 'correct');
+            }, index * 100);
+        });
+    }
+    
+    updateScaleDisplay() {
+        const currentNoteEl = document.getElementById('current-scale-note');
+        const targetNote = this.scaleNotes[this.scaleIndex];
+        const keyEl = document.querySelector(`.key[data-note="${targetNote}"]`);
+        const fingerNum = keyEl ? keyEl.dataset.finger : '';
+        
+        currentNoteEl.textContent = `Next: ${targetNote.replace('2', '')} (Finger ${fingerNum})`;
+    }
+    
+    highlightNextScaleNote() {
+        this.clearScaleHighlights();
+        const targetNote = this.scaleNotes[this.scaleIndex];
+        const key = document.querySelector(`.key[data-note="${targetNote}"]`);
+        
+        if (key) {
+            key.classList.add('scale-target');
+        }
+    }
+    
+    clearScaleHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('scale-target');
+        });
+    }
+    
+    startMetronome() {
+        this.stopMetronome();
+        const beatInterval = (60 / this.metronomeBPM) * 1000;
+        
+        this.metronomeInterval = setInterval(() => {
+            this.pulseMetronome();
+        }, beatInterval);
+        
+        // Initial pulse
+        this.pulseMetronome();
+    }
+    
+    stopMetronome() {
+        if (this.metronomeInterval) {
+            clearInterval(this.metronomeInterval);
+            this.metronomeInterval = null;
+        }
+        const beatIndicator = document.getElementById('metronome-beat');
+        if (beatIndicator) {
+            beatIndicator.classList.remove('pulse');
+        }
+    }
+    
+    pulseMetronome() {
+        const beatIndicator = document.getElementById('metronome-beat');
+        if (beatIndicator) {
+            beatIndicator.classList.remove('pulse');
+            // Force reflow
+            void beatIndicator.offsetWidth;
+            beatIndicator.classList.add('pulse');
+        }
+    }
+    
+    showScalesFeedback(message) {
+        const feedbackEl = document.getElementById('scales-feedback');
+        feedbackEl.textContent = message;
+        feedbackEl.classList.add('show');
+    }
+    
+    clearScalesFeedback() {
+        const feedbackEl = document.getElementById('scales-feedback');
+        feedbackEl.classList.remove('show');
+        feedbackEl.textContent = '';
+    }
+    
     setMode(mode) {
         this.mode = mode;
+        
+        // Reset all mode states
+        this.quizActive = false;
+        this.scaleActive = false;
+        this.stopMetronome();
+        this.clearFeedback();
+        this.clearScalesFeedback();
+        this.clearScaleHighlights();
+        
         if (mode === 'free') {
-            this.quizActive = false;
-            this.clearFeedback();
             this.updateStatus('Free Play Mode - Play any note!');
-        } else {
-            // Entering quiz mode - reset quiz UI state
-            this.quizActive = false;
+        } else if (mode === 'quiz') {
+            // Reset quiz UI state
             this.targetNote = null;
             this.awaitingAnswer = false;
-            this.clearFeedback();
             
-            // Reset UI to initial state
             const targetNoteEl = document.getElementById('target-note');
             const noteHintEl = document.getElementById('note-hint');
             const startQuizBtn = document.getElementById('start-quiz-btn');
@@ -175,6 +402,19 @@ class PianoApp {
             nextNoteBtn.classList.add('hidden');
             
             this.updateStatus('Quiz Mode - Press Start to begin!');
+        } else if (mode === 'scales') {
+            // Reset scales UI state
+            this.scaleIndex = 0;
+            
+            const currentNoteEl = document.getElementById('current-scale-note');
+            const startScaleBtn = document.getElementById('start-scale-btn');
+            const resetScaleBtn = document.getElementById('reset-scale-btn');
+            
+            currentNoteEl.textContent = 'Press Start to begin';
+            startScaleBtn.classList.remove('hidden');
+            resetScaleBtn.classList.add('hidden');
+            
+            this.updateStatus('Scales Mode - Press Start to begin!');
         }
     }
     
@@ -328,6 +568,9 @@ class PianoApp {
         // Check quiz answer if in quiz mode
         if (this.mode === 'quiz' && this.quizActive) {
             this.checkQuizAnswer(note);
+        } else if (this.mode === 'scales' && this.scaleActive) {
+            // Check scale progress
+            this.checkScaleProgress(note);
         } else {
             this.updateStatus(`Playing: ${note} (${frequency.toFixed(2)} Hz)`);
         }
