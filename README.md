@@ -34,12 +34,12 @@ A simple web application to help beginners learn the fundamentals of playing pia
 - [x] Adjustable playback speed for practice
 - [x] Loop sections for focused practice
 
-### Phase 5: Basics & Technique
-- [ ] Add hand position guide (where to place hands on keyboard)
-- [ ] Create posture reminder overlay
-- [ ] Add "lessons" section with written tips
-- [ ] Include basic music theory (whole steps, half steps, octave concept)
-- [ ] Add progress tracking (lessons completed, songs mastered)
+### Phase 5: Basics & Technique ✅
+- [x] Add hand position guide (where to place hands on keyboard)
+- [x] Create posture reminder overlay
+- [x] Add "lessons" section with written tips
+- [x] Include basic music theory (whole steps, half steps, octave concept)
+- [x] Add progress tracking (lessons completed, songs mastered)
 
 ### Phase 6: Polish & Ship
 - [ ] Add dark/light theme toggle

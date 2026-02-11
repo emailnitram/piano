@@ -58,6 +58,14 @@ class PianoApp {
             }
         };
         
+        // Progress tracking
+        this.progress = {
+            quizScore: 0,
+            scalesCompleted: 0,
+            songsMastered: []
+        };
+        this.loadProgress();
+        
         this.init();
     }
     
@@ -68,6 +76,8 @@ class PianoApp {
         this.setupQuizUI();
         this.setupScalesUI();
         this.setupSongsUI();
+        this.setupLessonsUI();
+        this.updateProgressDisplay();
     }
     
     setupAudio() {
@@ -163,9 +173,11 @@ class PianoApp {
         const quizBtn = document.getElementById('quiz-btn');
         const scalesBtn = document.getElementById('scales-btn');
         const songsBtn = document.getElementById('songs-btn');
+        const lessonsBtn = document.getElementById('lessons-btn');
         const quizPanel = document.getElementById('quiz-panel');
         const scalesPanel = document.getElementById('scales-panel');
         const songsPanel = document.getElementById('songs-panel');
+        const lessonsPanel = document.getElementById('lessons-panel');
         
         freePlayBtn.addEventListener('click', () => {
             this.setMode('free');
@@ -173,9 +185,11 @@ class PianoApp {
             quizBtn.classList.remove('active');
             scalesBtn.classList.remove('active');
             songsBtn.classList.remove('active');
+            lessonsBtn.classList.remove('active');
             quizPanel.classList.add('hidden');
             scalesPanel.classList.add('hidden');
             songsPanel.classList.add('hidden');
+            lessonsPanel.classList.add('hidden');
         });
         
         quizBtn.addEventListener('click', () => {
@@ -184,9 +198,11 @@ class PianoApp {
             freePlayBtn.classList.remove('active');
             scalesBtn.classList.remove('active');
             songsBtn.classList.remove('active');
+            lessonsBtn.classList.remove('active');
             quizPanel.classList.remove('hidden');
             scalesPanel.classList.add('hidden');
             songsPanel.classList.add('hidden');
+            lessonsPanel.classList.add('hidden');
         });
         
         scalesBtn.addEventListener('click', () => {
@@ -195,9 +211,11 @@ class PianoApp {
             freePlayBtn.classList.remove('active');
             quizBtn.classList.remove('active');
             songsBtn.classList.remove('active');
+            lessonsBtn.classList.remove('active');
             quizPanel.classList.add('hidden');
             scalesPanel.classList.remove('hidden');
             songsPanel.classList.add('hidden');
+            lessonsPanel.classList.add('hidden');
         });
         
         songsBtn.addEventListener('click', () => {
@@ -206,9 +224,25 @@ class PianoApp {
             freePlayBtn.classList.remove('active');
             quizBtn.classList.remove('active');
             scalesBtn.classList.remove('active');
+            lessonsBtn.classList.remove('active');
             quizPanel.classList.add('hidden');
             scalesPanel.classList.add('hidden');
             songsPanel.classList.remove('hidden');
+            lessonsPanel.classList.add('hidden');
+        });
+        
+        lessonsBtn.addEventListener('click', () => {
+            this.setMode('lessons');
+            lessonsBtn.classList.add('active');
+            freePlayBtn.classList.remove('active');
+            quizBtn.classList.remove('active');
+            scalesBtn.classList.remove('active');
+            songsBtn.classList.remove('active');
+            quizPanel.classList.add('hidden');
+            scalesPanel.classList.add('hidden');
+            songsPanel.classList.add('hidden');
+            lessonsPanel.classList.remove('hidden');
+            this.updateProgressDisplay();
         });
         
         // Quiz control buttons
@@ -339,6 +373,9 @@ class PianoApp {
         this.stopMetronome();
         this.showScalesFeedback('🎉 Scale Complete! Great job!');
         this.updateStatus('Scale Complete! Press Reset to practice again.');
+        
+        // Track progress
+        this.updateProgress(null, 1, null);
         
         // Flash all keys in sequence
         this.flashScaleSuccess();
@@ -587,6 +624,11 @@ class PianoApp {
         this.stopSongPlayback();
         this.updateProgressBar();
         
+        // Track progress
+        if (this.currentSong) {
+            this.updateProgress(null, null, this.currentSong.name);
+        }
+        
         if (this.loopSong) {
             this.showSongsFeedback('🎵 Song Complete! Looping...');
             setTimeout(() => {
@@ -768,6 +810,16 @@ class PianoApp {
             
             this.updateSongDisplay();
             this.updateStatus('Songs Mode - Select a song and press Start!');
+        } else if (mode === 'lessons') {
+            this.updateStatus('Lessons Mode - Learn proper technique!');
+            this.updateProgressDisplay();
+        }
+    }
+            resetSongBtn.classList.add('hidden');
+            pauseSongBtn.textContent = 'Pause';
+            
+            this.updateSongDisplay();
+            this.updateStatus('Songs Mode - Select a song and press Start!');
         }
     }
     
@@ -826,6 +878,11 @@ class PianoApp {
             this.streak++;
             if (this.streak > this.bestStreak) {
                 this.bestStreak = this.streak;
+            }
+            
+            // Track progress every 5 correct answers
+            if (this.score % 5 === 0) {
+                this.updateProgress(this.score, null, null);
             }
             
             targetNoteEl.classList.add('correct');
@@ -966,6 +1023,80 @@ class PianoApp {
     
     updateStatus(text) {
         this.statusText.textContent = text;
+    }
+    
+    // Lessons UI Setup
+    setupLessonsUI() {
+        // Lesson tab switching
+        const lessonTabs = document.querySelectorAll('.lesson-tab');
+        const lessonSections = document.querySelectorAll('.lesson-section');
+        
+        lessonTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const lessonId = tab.dataset.lesson;
+                
+                // Update active tab
+                lessonTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding section
+                lessonSections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(`${lessonId}-lesson`).classList.remove('hidden');
+            });
+        });
+    }
+    
+    // Progress tracking
+    loadProgress() {
+        try {
+            const saved = localStorage.getItem('pianoAppProgress');
+            if (saved) {
+                this.progress = JSON.parse(saved);
+            }
+        } catch (e) {
+            console.log('Could not load progress from localStorage');
+        }
+    }
+    
+    saveProgress() {
+        try {
+            localStorage.setItem('pianoAppProgress', JSON.stringify(this.progress));
+        } catch (e) {
+            console.log('Could not save progress to localStorage');
+        }
+    }
+    
+    updateProgress(quizScore, scalesCompleted, songName) {
+        if (quizScore) {
+            this.progress.quizScore = Math.max(this.progress.quizScore, quizScore);
+        }
+        if (scalesCompleted) {
+            this.progress.scalesCompleted += scalesCompleted;
+        }
+        if (songName && !this.progress.songsMastered.includes(songName)) {
+            this.progress.songsMastered.push(songName);
+        }
+        this.saveProgress();
+        this.updateProgressDisplay();
+    }
+    
+    updateProgressDisplay() {
+        const quizProgress = document.getElementById('quiz-progress');
+        const scalesProgress = document.getElementById('scales-progress');
+        const songsProgress = document.getElementById('songs-progress');
+        
+        if (quizProgress) {
+            quizProgress.textContent = `${this.progress.quizScore} notes learned`;
+        }
+        if (scalesProgress) {
+            scalesProgress.textContent = `${this.progress.scalesCompleted} scales completed`;
+        }
+        if (songsProgress) {
+            const count = this.progress.songsMastered.length;
+            songsProgress.textContent = `${count} song${count !== 1 ? 's' : ''} mastered`;
+        }
     }
 }
 
