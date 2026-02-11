@@ -20,12 +20,12 @@ A simple web application to help beginners learn the fundamentals of playing pia
 - [x] Track score/streak counter
 - [x] Implement basic audio visualization (waveform or simple animation)
 
-### Phase 3: Scales & Patterns
-- [ ] Add C Major scale lesson module
-- [ ] Highlight keys as user plays through scale
-- [ ] Show finger numbers on keys (1-5 for right hand)
-- [ ] Create scale practice mode with metronome (visual beat indicator)
-- [ ] Add ascending and descending scale practice
+### Phase 3: Scales & Patterns ✅
+- [x] Add C Major scale lesson module
+- [x] Highlight keys as user plays through scale
+- [x] Show finger numbers on keys (1-5 for right hand)
+- [x] Create scale practice mode with metronome (visual beat indicator)
+- [x] Add ascending and descending scale practice
 
 ### Phase 4: Simple Songs
 - [ ] Create library of 3 beginner songs (e.g., Twinkle Twinkle, Mary Had a Little Lamb, Ode to Joy)

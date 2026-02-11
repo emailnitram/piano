@@ -35,35 +35,43 @@
         <div class="piano-container">
             <div class="piano" id="piano">
                 <!-- White keys -->
-                <div class="key white" data-note="C" data-key="a" data-freq="261.63">
+                <div class="key white" data-note="C" data-key="a" data-freq="261.63" data-finger="1">
+                    <span class="finger-indicator">1</span>
                     <span class="note-label">C</span>
                     <span class="key-label">A</span>
                 </div>
-                <div class="key white" data-note="D" data-key="s" data-freq="293.66">
+                <div class="key white" data-note="D" data-key="s" data-freq="293.66" data-finger="2">
+                    <span class="finger-indicator">2</span>
                     <span class="note-label">D</span>
                     <span class="key-label">S</span>
                 </div>
-                <div class="key white" data-note="E" data-key="d" data-freq="329.63">
+                <div class="key white" data-note="E" data-key="d" data-freq="329.63" data-finger="3">
+                    <span class="finger-indicator">3</span>
                     <span class="note-label">E</span>
                     <span class="key-label">D</span>
                 </div>
-                <div class="key white" data-note="F" data-key="f" data-freq="349.23">
+                <div class="key white" data-note="F" data-key="f" data-freq="349.23" data-finger="1">
+                    <span class="finger-indicator">1</span>
                     <span class="note-label">F</span>
                     <span class="key-label">F</span>
                 </div>
-                <div class="key white" data-note="G" data-key="g" data-freq="392.00">
+                <div class="key white" data-note="G" data-key="g" data-freq="392.00" data-finger="2">
+                    <span class="finger-indicator">2</span>
                     <span class="note-label">G</span>
                     <span class="key-label">G</span>
                 </div>
-                <div class="key white" data-note="A" data-key="h" data-freq="440.00">
+                <div class="key white" data-note="A" data-key="h" data-freq="440.00" data-finger="3">
+                    <span class="finger-indicator">3</span>
                     <span class="note-label">A</span>
                     <span class="key-label">H</span>
                 </div>
-                <div class="key white" data-note="B" data-key="j" data-freq="493.88">
+                <div class="key white" data-note="B" data-key="j" data-freq="493.88" data-finger="4">
+                    <span class="finger-indicator">4</span>
                     <span class="note-label">B</span>
                     <span class="key-label">J</span>
                 </div>
-                <div class="key white" data-note="C2" data-key="k" data-freq="523.25">
+                <div class="key white" data-note="C2" data-key="k" data-freq="523.25" data-finger="5">
+                    <span class="finger-indicator">5</span>
                     <span class="note-label">C</span>
                     <span class="key-label">K</span>
                 </div>
@@ -96,6 +104,7 @@
             <div class="mode-toggle">
                 <button id="free-play-btn" class="mode-btn active">Free Play</button>
                 <button id="quiz-btn" class="mode-btn">Note Quiz</button>
+                <button id="scales-btn" class="mode-btn">Scales</button>
             </div>
             
             <div id="quiz-panel" class="quiz-panel hidden">
@@ -123,6 +132,53 @@
                     </div>
                 </div>
                 <div id="feedback" class="feedback"></div>
+            </div>
+            
+            <div id="scales-panel" class="scales-panel hidden">
+                <div class="scales-display">
+                    <h3>C Major Scale</h3>
+                    <p class="scales-instruction">Follow the highlighted keys in order</p>
+                    <div class="scale-progress">
+                        <div id="scale-notes" class="scale-notes">C → D → E → F → G → A → B → C</div>
+                        <div id="current-scale-note" class="current-scale-note">Press Start to begin</div>
+                    </div>
+                    <div class="finger-guide">
+                        <p>Right Hand Fingers:</p>
+                        <div class="finger-numbers">
+                            <span class="finger-num" data-note="C">1</span>
+                            <span class="finger-num" data-note="D">2</span>
+                            <span class="finger-num" data-note="E">3</span>
+                            <span class="finger-num" data-note="F">1</span>
+                            <span class="finger-num" data-note="G">2</span>
+                            <span class="finger-num" data-note="A">3</span>
+                            <span class="finger-num" data-note="B">4</span>
+                            <span class="finger-num" data-note="C2">5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scales-controls">
+                    <button id="start-scale-btn" class="scale-action-btn">Start Practice</button>
+                    <button id="reset-scale-btn" class="scale-action-btn hidden">Reset</button>
+                    <div class="scale-direction">
+                        <label class="direction-toggle">
+                            <input type="checkbox" id="descending-toggle">
+                            <span class="toggle-label">Descending</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="metronome-section">
+                    <div class="metronome-display">
+                        <div id="metronome-beat" class="metronome-beat"></div>
+                        <span class="beat-label">♩ = 60</span>
+                    </div>
+                    <div class="metronome-toggle">
+                        <label class="metro-toggle">
+                            <input type="checkbox" id="metronome-toggle" checked>
+                            <span class="metro-label">Metronome On</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="scales-feedback" id="scales-feedback"></div>
             </div>
         </div>
 
