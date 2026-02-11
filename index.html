@@ -105,6 +105,7 @@
                 <button id="free-play-btn" class="mode-btn active">Free Play</button>
                 <button id="quiz-btn" class="mode-btn">Note Quiz</button>
                 <button id="scales-btn" class="mode-btn">Scales</button>
+                <button id="songs-btn" class="mode-btn">Songs</button>
             </div>
             
             <div id="quiz-panel" class="quiz-panel hidden">
@@ -179,6 +180,56 @@
                     </div>
                 </div>
                 <div class="scales-feedback" id="scales-feedback"></div>
+            </div>
+            
+            <div id="songs-panel" class="songs-panel hidden">
+                <div class="songs-display">
+                    <h3>Learn a Song</h3>
+                    <div class="song-selector">
+                        <select id="song-select" class="song-select">
+                            <option value="twinkle">⭐ Twinkle Twinkle Little Star</option>
+                            <option value="mary">⭐ Mary Had a Little Lamb</option>
+                            <option value="ode">⭐ Ode to Joy</option>
+                        </select>
+                    </div>
+                    <div class="falling-notes-container">
+                        <div id="falling-notes" class="falling-notes">
+                            <div class="notes-track">
+                                <div id="notes-display" class="notes-display">Select a song and press Start</div>
+                            </div>
+                            <div class="play-line"></div>
+                        </div>
+                    </div>
+                    <div class="song-progress">
+                        <div class="progress-bar">
+                            <div id="song-progress-fill" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text" class="progress-text">0 / 0 notes</span>
+                    </div>
+                </div>
+                <div class="songs-controls">
+                    <button id="start-song-btn" class="song-action-btn">Start Song</button>
+                    <button id="pause-song-btn" class="song-action-btn hidden">Pause</button>
+                    <button id="reset-song-btn" class="song-action-btn hidden">Reset</button>
+                </div>
+                <div class="songs-options">
+                    <div class="speed-control">
+                        <label for="speed-slider">Speed:</label>
+                        <input type="range" id="speed-slider" min="0.25" max="1.5" step="0.25" value="0.5" class="speed-slider">
+                        <span id="speed-value" class="speed-value">50%</span>
+                    </div>
+                    <div class="mode-toggles">
+                        <label class="song-toggle">
+                            <input type="checkbox" id="wait-mode-toggle" checked>
+                            <span class="toggle-text">Wait Mode</span>
+                        </label>
+                        <label class="song-toggle">
+                            <input type="checkbox" id="loop-toggle">
+                            <span class="toggle-text">Loop</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="songs-feedback" id="songs-feedback"></div>
             </div>
         </div>
 

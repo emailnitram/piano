@@ -27,12 +27,12 @@ A simple web application to help beginners learn the fundamentals of playing pia
 - [x] Create scale practice mode with metronome (visual beat indicator)
 - [x] Add ascending and descending scale practice
 
-### Phase 4: Simple Songs
-- [ ] Create library of 3 beginner songs (e.g., Twinkle Twinkle, Mary Had a Little Lamb, Ode to Joy)
-- [ ] Implement "falling notes" or "sheet music" display
-- [ ] Add "wait mode" - song pauses until user hits correct note
-- [ ] Adjustable playback speed for practice
-- [ ] Loop sections for focused practice
+### Phase 4: Simple Songs ✅
+- [x] Create library of 3 beginner songs (e.g., Twinkle Twinkle, Mary Had a Little Lamb, Ode to Joy)
+- [x] Implement "falling notes" or "sheet music" display
+- [x] Add "wait mode" - song pauses until user hits correct note
+- [x] Adjustable playback speed for practice
+- [x] Loop sections for focused practice
 
 ### Phase 5: Basics & Technique
 - [ ] Add hand position guide (where to place hands on keyboard)
